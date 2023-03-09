@@ -5,7 +5,7 @@ import { CtxProvider } from './Ctx.context'
 function App() {
   return (
     <div className="App">
-      <CtxProvider prop="production">
+      <CtxProvider>
         <Context />
       </CtxProvider>
     </div>

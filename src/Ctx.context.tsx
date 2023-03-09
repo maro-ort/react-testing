@@ -1,17 +1,21 @@
 import React, { createContext, FC, useCallback, useState } from 'react'
 
+type Props = {
+  ctxProps?: any
+  children: React.ReactNode
+}
+
 const Ctx = createContext<{
   ctxValue: Record<string, number>
   setCtxValue?: React.Dispatch<React.SetStateAction<Record<string, number>>>
   append2CtxValue: (key: string, value: number) => void
-  prop: string
+  ctxProps?: Props['ctxProps']
 }>({
   ctxValue: {},
   append2CtxValue: () => ({}),
-  prop: '',
 })
 
-const CtxProvider: FC<{ prop: string; children: React.ReactNode }> = ({ prop, children }) => {
+const CtxProvider: FC<Props> = ({ ctxProps, children }) => {
   const [ctxValue, setCtxValue] = useState<Record<string, number>>({})
 
   const append2CtxValue = useCallback(
@@ -29,7 +33,7 @@ const CtxProvider: FC<{ prop: string; children: React.ReactNode }> = ({ prop, ch
     ctxValue,
     setCtxValue,
     append2CtxValue,
-    prop,
+    ctxProps,
   }
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

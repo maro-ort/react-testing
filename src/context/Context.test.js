@@ -1,50 +1,84 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { CtxProvider } from '../Ctx.context'
 import Context from './Context'
+import { s } from '../utils'
 
 describe('Block component tests', () => {
   afterEach(() => {
     cleanup()
   })
 
-  test('If Ctx not available', () => {
-    const { container } = render(<Context />)
-    const [ pre ] = container.getElementsByTagName('pre')
-    const [ prop ] = container.getElementsByClassName('prop')
-    expect(pre).toHaveTextContent('{}')
-    expect(prop).toHaveTextContent('')
+  // ctxProps === undefined renders empty
+  // default ctxValue === {}
+  test('Test default context with no props', () => {
+    render(<CtxProvider><Context /></CtxProvider>)
+    const ctxPropsEl = screen.getByTestId('ctxPropsId')
+    const ctxValueEl = screen.getByTestId('ctxValueId')
+
+    expect(ctxPropsEl).toBeEmptyDOMElement('')
+    expect(ctxValueEl).toHaveTextContent('{}')
   })
 
-  test('Can fetch Ctx prop', () => {
-    const { container } = render(<CtxProvider prop="testing"><Context prop='testing' /></CtxProvider>)
-    const [ pre ] = container.getElementsByTagName('pre')
-    const [ prop ] = container.getElementsByClassName('prop')
-    expect(pre).toHaveTextContent('{}')
-    expect(prop).toHaveTextContent('testing')
+  test('Test context with props', () => {
+    const ctxProps = {
+      arrayProp: [1,2,3,4],
+      objectProp: {},
+      numberProp: 2,
+      stringProp: 'a string',
+    }
+    render(<CtxProvider ctxProps={ctxProps}><Context /></CtxProvider>)
+    const ctxPropsEl = screen.getByTestId('ctxPropsId')
+    expect(ctxPropsEl).toHaveTextContent(s(ctxProps))
   })
 
-  test('Can append to Ctx', () => {
-    const { container } = render(<CtxProvider prop="testing"><Context prop='testing' /></CtxProvider>)
-    const [ button ] = container.getElementsByTagName('button')
-    const [ pre ] = container.getElementsByTagName('pre')
-    const [ prop ] = container.getElementsByClassName('prop')
-    const [ key, value ] = container.getElementsByTagName('input')
-    expect(pre).toHaveTextContent('{}')
-    expect(prop).toHaveTextContent('testing')
+  test('Test ctx management', () => {
+    render(<CtxProvider><Context /></CtxProvider>)
+
+    const ctxValueOutput = screen.getByTestId('ctxValueId')
+    const keyInput = screen.getByTestId('keyId')
+    const valueInput = screen.getByTestId('valueId')
+    const appendButton = screen.getByTestId('append2CtxValue')
+    const resetButton = screen.getByTestId('resetCtxValue')
 
     // Key is empty
-    fireEvent.click(button)
-    expect(pre).toHaveTextContent('{}')
+    fireEvent.click(appendButton)
+    expect(ctxValueOutput).toHaveTextContent('{}')
 
-    fireEvent.change(key, { target: { value: 'newKey' } })
-    expect(key).toHaveValue('newKey')
-    fireEvent.click(button)
-    expect(pre).toHaveTextContent('"newKey": 0')
+    // Add new key with default number
+    const defaultKey = 'defaultKey'
+    expect(valueInput).toHaveValue(0)
+    fireEvent.change(keyInput, { target: { value: defaultKey } })
+    expect(keyInput).toHaveValue(defaultKey)
+    fireEvent.click(appendButton)
+    expect(ctxValueOutput).toHaveTextContent(s({ [defaultKey] : 0}))
 
-    fireEvent.change(key, { target: { value: 'second key' } })
-    fireEvent.change(value, { target: { value: 99 } })
-    fireEvent.click(button)
-    expect(pre).toHaveTextContent('"second key": 99')
+    // Reset ctxValue
+    fireEvent.click(resetButton)
+    expect(ctxValueOutput).toHaveTextContent(s({}))
+
+    // Add new key with number
+    const newKey = 'newKey'
+    const newValue = 42
+    fireEvent.change(keyInput, { target: { value: newKey } })
+    fireEvent.change(valueInput, { target: { value: newValue } })
+    expect(valueInput).toHaveValue(newValue)
+
+    fireEvent.click(appendButton)
+    expect(ctxValueOutput).toHaveTextContent(s({ [newKey] : newValue}))
+    fireEvent.click(resetButton)
+
+    // Override key
+    const overrideKey = 'overrideKey'
+    const overrideNewValue = 1001
+    fireEvent.change(keyInput, { target: { value: overrideKey } })
+    fireEvent.change(valueInput, { target: { value: newValue } })
+    fireEvent.click(appendButton)
+    expect(ctxValueOutput).toHaveTextContent(s({ [overrideKey] : newValue}))
+    fireEvent.change(keyInput, { target: { value: overrideKey } })
+    fireEvent.change(valueInput, { target: { value: overrideNewValue } })
+    fireEvent.click(appendButton)
+    expect(ctxValueOutput).toHaveTextContent(s({ [overrideKey] : overrideNewValue}))
 
   })
+
 })
