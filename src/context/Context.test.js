@@ -3,7 +3,7 @@ import { CtxProvider } from '../Ctx.context'
 import Context from './Context'
 import { s } from '../utils'
 
-describe('Block component tests', () => {
+describe('Basic context management', () => {
   afterEach(() => {
     cleanup()
   })

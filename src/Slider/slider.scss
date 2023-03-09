@@ -1,0 +1,35 @@
+.slider {
+  background-color: red;
+  cursor: pointer;
+  font-size: 2em;
+  position: relative;
+  user-select: none;
+  width: 100%;
+
+  &__path {
+    background-color: #aaa;
+    height: 0.2em;
+    line-height: normal;
+    margin: 0.2em 0;
+    width: 100%;
+  }
+
+  &__thumb {
+    background-color: #aaa;
+    border: 0.1em solid #33d;
+    border-radius: 100%;
+    box-sizing: border-box;
+    cursor: grab;
+    height: 0.6em;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, calc(-50% + 0.1em));
+    width: 0.6em;
+  }
+
+  &__track {
+    background-color: #33d;
+    height: 100%;
+    width: 50%;
+  }
+}
