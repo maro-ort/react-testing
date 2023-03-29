@@ -56,9 +56,10 @@ describe('Slider interactions', () => {
     wrapper.style.width = "100px"
     const slider = screen.getByTestId('slider').getElementsByClassName('slider')[0]
 
+    // const s = screen.querySelector('.slider')
 
     const sliderRect = slider.getBoundingClientRect()
-    console.log({ sliderRect });
+    // console.log({ sliderRect });
 
     // fireEvent.click(slider, { clientX: 50 })
     // expect(value).toHaveTextContent(50)

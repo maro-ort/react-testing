@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
+/* eslint-disable testing-library/no-node-access */
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import Blocks from './Blocks'
 
 describe('Block component tests', () => {
@@ -8,14 +9,17 @@ describe('Block component tests', () => {
 
   test('Starts with the right amount of blocks', () => {
     const quantity = 10
-    const { container } = render(<Blocks quantity={quantity} />)
+    render(<Blocks quantity={quantity} />)
+    const container = screen.getByTestId('blocks')
+
     const blocks = container.querySelectorAll('.block')
     expect(blocks.length).toBe(quantity)
-    blocks.length > 0 && expect(blocks[blocks.length - 1]).toHaveTextContent(quantity)
+    expect(blocks[blocks.length - 1]).toHaveTextContent(quantity)
   })
 
   test('Can add and remove blocks', () => {
-    const { container } = render(<Blocks />)
+    render(<Blocks />)
+    const container = screen.getByTestId('blocks')
     const blocks = container.getElementsByClassName('block')
     const [addButton] = container.getElementsByClassName('add')
     const [removeButton] = container.getElementsByClassName('remove')
@@ -23,13 +27,14 @@ describe('Block component tests', () => {
     expect(blocks.length).toBe(0)
     fireEvent.click(addButton)
     expect(blocks.length).toBe(1)
+    expect(blocks[blocks.length - 1]).toHaveTextContent(1)
     fireEvent.click(removeButton)
     expect(blocks.length).toBe(0)
     fireEvent.click(removeButton)
     expect(blocks.length).toBe(0)
     fireEvent.click(addButton)
     fireEvent.click(addButton)
-    blocks.length > 0 && expect(blocks[blocks.length - 1]).toHaveTextContent(2)
+    expect(blocks[blocks.length - 1]).toHaveTextContent(2)
 
   })
 })

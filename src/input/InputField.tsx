@@ -23,7 +23,7 @@ const InputField: FC<Props> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => !readOnly && onChange?.(e)
 
   return (
-    <label htmlFor={name}>
+    <label htmlFor={name} data-testid="input-field">
       {title && <span className="input-title">{title}</span>}
       <input
         onChange={handleChange}

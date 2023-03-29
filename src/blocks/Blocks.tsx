@@ -19,7 +19,7 @@ const Blocks: FC<{
   }, [blockQuantity, setBlockQuantity])
 
   return (
-    <div id="blocks">
+    <div data-testid="blocks">
       <div className="buttons">
         <button className="add" onClick={addBlock}>
           Add

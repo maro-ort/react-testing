@@ -1,6 +1,7 @@
 import React from 'react'
 import Context from './context/Context'
 import { CtxProvider } from './Ctx.context'
+import Search from './search/Search'
 import SliderTest from './Slider/SliderTest'
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
       {/* <CtxProvider>
         <Context />
       </CtxProvider> */}
-      <SliderTest value={50} />
+      <Search apiData={['a', 'ba', 'c']} />
     </div>
   )
 }

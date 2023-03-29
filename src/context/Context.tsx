@@ -11,7 +11,7 @@ const Context = () => {
   const handleAppend = useCallback(() => {
     if (!key) return
     append2CtxValue(key, value)
-  }, [key, value])
+  }, [append2CtxValue, key, value])
 
   return (
     <div>

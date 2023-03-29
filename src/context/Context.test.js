@@ -10,7 +10,7 @@ describe('Basic context management', () => {
 
   // ctxProps === undefined renders empty
   // default ctxValue === {}
-  test('Test default context with no props', () => {
+  test('Default context with no props', () => {
     render(<CtxProvider><Context /></CtxProvider>)
     const ctxPropsEl = screen.getByTestId('ctxPropsId')
     const ctxValueEl = screen.getByTestId('ctxValueId')
@@ -19,7 +19,7 @@ describe('Basic context management', () => {
     expect(ctxValueEl).toHaveTextContent('{}')
   })
 
-  test('Test context with props', () => {
+  test('Context with props', () => {
     const ctxProps = {
       arrayProp: [1,2,3,4],
       objectProp: {},
@@ -31,7 +31,7 @@ describe('Basic context management', () => {
     expect(ctxPropsEl).toHaveTextContent(s(ctxProps))
   })
 
-  test('Test ctx management', () => {
+  test('Ctx management', () => {
     render(<CtxProvider><Context /></CtxProvider>)
 
     const ctxValueOutput = screen.getByTestId('ctxValueId')
@@ -78,7 +78,6 @@ describe('Basic context management', () => {
     fireEvent.change(valueInput, { target: { value: overrideNewValue } })
     fireEvent.click(appendButton)
     expect(ctxValueOutput).toHaveTextContent(s({ [overrideKey] : overrideNewValue}))
-
   })
 
 })

@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
+/* eslint-disable testing-library/no-node-access */
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import InputField from './InputField'
 
@@ -7,9 +8,10 @@ describe('Input component tests', () => {
     cleanup()
   })
 
-  test('Test default props', () => {
+  test('default props', () => {
     const props = { name: 'input-name' }
-    const { container } = render(<InputField {...props} />)
+    render(<InputField {...props} />)
+    const container = screen.getByTestId('input-field')
 
     const [input] = container.getElementsByTagName('input')
     expect(input).toHaveAttribute('name', 'input-name')
@@ -22,7 +24,7 @@ describe('Input component tests', () => {
     expect(title).not.toBeTruthy()
   })
 
-  test('Test all props', () => {
+  test('all props', () => {
     const props = {
       name: 'input-name',
       type: 'number',
@@ -31,7 +33,8 @@ describe('Input component tests', () => {
       readOnly: true,
       required: true
     }
-    const { container } = render(<InputField {...props} />)
+    render(<InputField {...props} />)
+    const container = screen.getByTestId('input-field')
 
     const [input] = container.getElementsByTagName('input')
     expect(input).toHaveAttribute('name', 'input-name')
@@ -44,7 +47,7 @@ describe('Input component tests', () => {
     expect(title).toHaveTextContent('Example title')
   })
 
-  test('Test change handling', () => {
+  test('change handling', () => {
     let result = ''
     const props = {
       name: 'input-name',
@@ -54,8 +57,9 @@ describe('Input component tests', () => {
       }
     }
 
+    render(<InputField {...props} />)
+    const container = screen.getByTestId('input-field')
 
-    const { container } = render(<InputField {...props} />)
     const [input] = container.getElementsByTagName('input')
     expect(input).toHaveValue('')
     expect(result).toBe('')
@@ -65,7 +69,7 @@ describe('Input component tests', () => {
     expect(result).toBe('new value')
   })
 
-  test('Test change handling if readonly', () => {
+  test('change handling if readonly', () => {
     let result = ''
     const props = {
       name: 'input-name',
@@ -76,8 +80,9 @@ describe('Input component tests', () => {
       }
     }
 
+    render(<InputField {...props} />)
+    const container = screen.getByTestId('input-field')
 
-    const { container } = render(<InputField {...props} />)
     const [input] = container.getElementsByTagName('input')
     expect(input).toHaveValue('')
     expect(result).toBe('')
