@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from 'react'
-import cx from 'classnames'
 
 const Accordion: FC<{
   content: Array<{ title: string; text: string }>
@@ -14,7 +13,7 @@ const Accordion: FC<{
   )
 
   return (
-    <div data-testid="accordion">
+    <div id="accordion" data-testid="accordion">
       {content.length === 0 ? (
         <p>No elements to display</p>
       ) : (
@@ -23,7 +22,9 @@ const Accordion: FC<{
             <div className="title" onClick={() => handleClick(i)}>
               {title}
             </div>
-            <div className={cx('content', { '--open': i === openCard })}>{text}</div>
+            <div className="content" style={{ display: i === openCard ? 'block' : 'none' }}>
+              {text}
+            </div>
           </div>
         ))
       )}

@@ -44,9 +44,8 @@ describe('Accordion component tests', () => {
 
     const cardTitle = screen.getByText(content[0].title)
     const cardText = screen.getByText(content[0].text)
-    expect(cardText).not.toHaveClass('--open')
+    expect(cardText).not.toBeVisible()
     fireEvent.click(cardTitle)
-    expect(cardText).toHaveClass('--open')
+    expect(cardText).toBeVisible()
   })
-
 })
